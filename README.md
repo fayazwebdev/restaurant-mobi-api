@@ -39,3 +39,23 @@ php bin/console doctrine:migrations:migrate
 symfony serve
 
 The API will be available at: http://127.0.0.1:8000
+
+Unit Test:
+
+> php bin/phpunit --testdox
+> PHPUnit 11.5.42 by Sebastian Bergmann and contributors.
+
+Runtime: PHP 8.2.12
+Configuration: D:\xampp\htdocs\restrant-mobi-api\phpunit.dist.xml
+
+.... 4 / 4 (100%)
+
+Time: 00:00.082, Memory: 10.00 MB
+
+Order Service (App\Tests\Service\OrderService)
+✔ Create order fails when kitchen full for non vip
+✔ Create order succeeds for vip even when kitchen full
+✔ Create order fails for missing items
+✔ Complete order fails when not found
+
+OK (4 tests, 9 assertions)

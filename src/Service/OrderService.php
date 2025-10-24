@@ -17,7 +17,10 @@ class OrderService
 
     public function createOrder(array $data): array
     {
-        $this->validateOrderData($data);
+        $errors = $this->validateOrderData($data);
+        if (!empty($errors)) {
+            return $errors;
+        }
 
         $activeOrders = $this->em->getRepository(Order::class)->count(['status' => 'active']);
         $isVip = $data['VIP'] ?? false;
@@ -63,7 +66,7 @@ class OrderService
     {
         $errors = [];
 
-        if (empty($data['items']) || !is_array($data['items'])) {
+        if (!isset($data['items']) || empty($data['items']) || !is_array($data['items'])) {
             return array('error' => 'Items are required', 'code' => 400);
         }
 
