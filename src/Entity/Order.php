@@ -32,7 +32,6 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    public const STATUS_PENDING = 'pending';
     public const STATUS_ACTIVE  = 'active';
     public const STATUS_COMPLETED = 'completed';
 

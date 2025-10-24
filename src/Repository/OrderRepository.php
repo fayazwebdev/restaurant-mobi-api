@@ -17,7 +17,7 @@ class OrderRepository extends ServiceEntityRepository
     }
 
     /**
-     * Count active orders (status pending or in_progress)
+     * Count active orders (status active)
      */
     public function countActiveOrders(): int
     {
