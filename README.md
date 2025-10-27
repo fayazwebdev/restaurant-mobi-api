@@ -1,20 +1,28 @@
-# Restaurant Mobile Order API (Symfony)
+🍽️ Restaurant Mobile Order API (Symfony)
 
-## Features Implemented
+A RESTful API built with Symfony for managing restaurant orders with kitchen capacity limits and VIP prioritization.
 
-✅ Create new orders (with optional VIP flag)
-✅ Enforce kitchen capacity (configurable)
-✅ VIP orders bypass capacity limit
-✅ Order status flow: pending → active → completed
-✅ Mark orders as completed
-✅ Retrieve active orders
-✅ Database persistence using Doctrine ORM (MySQL)
+✅ Features Implemented
 
-## Setup & Installation
+    ✅ Create new orders (with optional VIP flag)
+
+    ✅ Enforce kitchen capacity (configurable)
+
+    ✅ VIP orders bypass capacity limit
+
+    ✅ Order status flow: active → completed
+
+    ✅ Mark orders as completed
+
+    ✅ Retrieve active orders
+
+    ✅ Database persistence using Doctrine ORM (MySQL)
+
+    ✅ Unit tests for core service logic
+
+⚙️ Setup & Installation
 
 Follow these steps to run the project locally:
-
-### Clone this repository
 
 1. Clone the repository
 
@@ -27,6 +35,8 @@ composer install
 
 3. Configure environment
 
+Update .env file:
+
 DATABASE_URL="mysql://root:@127.0.0.1:3306/restaurant_db?serverVersion=10.4.32-MariaDB&charset=utf8mb4"
 
 4. Setup database
@@ -38,24 +48,64 @@ php bin/console doctrine:migrations:migrate
 
 symfony serve
 
-The API will be available at: http://127.0.0.1:8000
+The API will be available at:
+👉 http://127.0.0.1:8000
 
-Unit Test:
+API Endpoints
+Create Order
 
-> php bin/phpunit --testdox
-> PHPUnit 11.5.42 by Sebastian Bergmann and contributors.
+POST /api/orders
 
-Runtime: PHP 8.2.12
-Configuration: D:\xampp\htdocs\restrant-mobi-api\phpunit.dist.xml
+Request Body:
+{
+"items": ["Burger", "Fries"],
+"pickup_time": "2025-10-25 14:00:00",
+"VIP": true
+}
+Responses:
 
-.... 4 / 4 (100%)
+201 Created – Order successfully created
 
-Time: 00:00.082, Memory: 10.00 MB
+400 Bad Request – Missing or invalid data
 
-Order Service (App\Tests\Service\OrderService)
-✔ Create order fails when kitchen full for non vip
-✔ Create order succeeds for vip even when kitchen full
+429 Too Many Requests – Kitchen is full for non-VIP orders
+
+Get Active Orders
+
+GET /api/orders/active
+
+Response Example:
+[
+{
+"id": 1,
+"items": ["Pizza"],
+"status": "active"
+}
+]
+
+Complete an Order
+
+PUT /api/orders/{id}/complete
+
+Response:
+{
+"message": "Order marked as completed",
+"status": "completed"
+}
+
+Error Responses:
+
+404 Not Found – Order does not exist
+
+400 Bad Request – Invalid ID
+
+🧪 Running Unit Tests
+
+php bin/phpunit --testdox
+
+App\Tests\Service\OrderServiceTest
+✔ Create order fails when kitchen full for non VIP
+✔ Create order succeeds for VIP even when kitchen full
 ✔ Create order fails for missing items
 ✔ Complete order fails when not found
-
-OK (4 tests, 9 assertions)
+✔ Complete order success

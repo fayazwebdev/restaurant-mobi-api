@@ -83,4 +83,26 @@ class OrderServiceTest extends TestCase
         $this->assertEquals('Order not found', $result['error']);
         $this->assertEquals(404, $result['code']);
     }
+
+    public function testCompleteOrderSuccess()
+    {
+        // Arrange
+        $order = new Order();
+        $order->setItems(['Pasta']);
+        $order->setPickupTime(new \DateTime('2025-10-25 18:00:00'));
+        $order->setIsVip(false);
+        $order->setStatus('active');
+
+        $this->repository->method('find')->willReturn($order);
+
+        $this->em->expects($this->once())->method('flush');
+
+        // Act
+        $result = $this->service->completeOrder(1);
+
+        // Assert
+        $this->assertEquals('completed', $order->getStatus());
+        $this->assertEquals(201, $result['code']);
+        $this->assertEquals('completed', $result[0]->getStatus());
+    }
 }
